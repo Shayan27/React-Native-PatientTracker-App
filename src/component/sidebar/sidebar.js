@@ -6,13 +6,9 @@ import {Content, Text} from 'native-base';
 export default class Sidebar extends React.Component {
   render() {
     return (
-          <Content style={{backgroundColor:'#FFFFFF'}}>
+          <Content style={{backgroundColor:'#000'}}>
           
-            <TouchableOpacity>
-                        <Link to="/login">
-                            <Text>Login</Text>
-                        </Link>
-            </TouchableOpacity>
+            <Text>Hello</Text>
           </Content>
     );
   }

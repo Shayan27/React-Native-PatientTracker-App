@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, Image
+  View, StyleSheet, Image
 } from 'react-native';
 
-import {Header,Left,Button,Icon,Right,Body,Title} from 'native-base';
+import {Text} from 'native-base';
 
 export default class AppBody extends React.Component {
   render() {

@@ -6,7 +6,7 @@ import { Home, Login, SignUp, ForgotPass, Dashboard } from '../component';
 export let Routes = () => (
     <NativeRouter>
         <View>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Login} />
             <Route exact path="/home" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />

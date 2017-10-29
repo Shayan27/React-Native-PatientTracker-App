@@ -14,8 +14,6 @@ import Login from './src/component/login/login';
 import Dashboard from './src/component/dashboard/dashboard';
 import {Navigator} from 'react-native-deprecated-custom-components';
 
-var routers = <Routes />
-
 import * as firebase from 'firebase';
 
 const firebaseConfig = {
