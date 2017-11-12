@@ -23,7 +23,7 @@ const firebaseConfig = {
   projectId: "patient-tracker-app-6a73b",
   storageBucket: "patient-tracker-app-6a73b.appspot.com",
   messagingSenderId: "938207442132"
-};
+}
 // Initialize the firebase app here and pass it to other components as needed. Only initialize on startup.
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
@@ -37,6 +37,8 @@ export default class App extends React.Component {
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      'Lato': require('./assets/fonts/Lato.ttf'),
+      'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
     });
     
     this._cacheResourcesAsync();

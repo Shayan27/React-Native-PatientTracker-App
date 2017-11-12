@@ -15,6 +15,7 @@ import { Item, Input, Label, Text } from 'native-base';
 
 import SignUp from '../signup/signup';
 import Account from './account';
+import AddPatient from '../PatientData/AddPatient';
 
 export default class Login extends React.Component {
     constructor(props){
@@ -96,7 +97,7 @@ export default class Login extends React.Component {
                     loading: false
                   });
             this.props.navigator.push({
-            component: Account
+            component: AddPatient
             });
           }
         ).catch((error) =>

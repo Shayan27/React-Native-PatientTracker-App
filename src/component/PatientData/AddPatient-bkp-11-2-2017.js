@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, Image, TouchableOpacity, ListView, Modal, Alert, KeyboardAvoidingView } from 'react-native';
-import {Text, Form, Item, List, ListItem, Label, Input, Header, Left, Body, Right, Button, Icon, Title, Card, CardItem, Thumbnail} from 'native-base'
+import { View, ScrollView, StyleSheet, Image, TouchableOpacity, ListView, Modal, Alert } from 'react-native';
+import {Text, Form, Item, List, ListItem, Label, Input, Header, Left, Body, Right, Button, Icon, Title} from 'native-base'
 import styles from '../styles/baseStyles.js';
 import DatePicker from 'react-native-datepicker'
 import SearchPatient from './SearchPatient.js'
-import Login from '../login/login';
 
 export default class AddPatient extends React.Component {
 
@@ -45,9 +44,7 @@ export default class AddPatient extends React.Component {
         // let searchedPatient = { text: snapshot.val()};
         // this.setState({ patientData: this.state.patientData.concat(searchedPatient)});
         // })
-    }
-    componentWillUnmount(){
-        console.ignoredYellowBox = ['Setting a timer'];
+
     }
 
     addPatient(e){
@@ -89,9 +86,8 @@ export default class AddPatient extends React.Component {
         super(props);
 
         this.state = {
-            loading: false,
+            loading: true,
             modalVisible: false,
-            showSearchBar: false,
             searchedPatient: [],
             patientData: [],
                 patientName: "",
@@ -142,7 +138,8 @@ export default class AddPatient extends React.Component {
         // }
         patientData.map(function (patient, i) {
             if(text == patient.text.PatientName.toLowerCase().match(`^${text}`)) {
-                this.setState({searchedPatient: this.state.searchedPatient.concat([JSON.stringify(patient)])})
+                this.setState({searchedPatient: this.state.searchedPatient.concat([patient])})
+                console.log(JSON.stringify(patient));
             } else {
                 console.log('not working')
             }
@@ -162,66 +159,33 @@ export default class AddPatient extends React.Component {
         }
     }
     render() {
-
         let patientData = this.state.patientData.map((patient) => 
+            // {if(this.state.user.uid !== patient.text.LoggedInKey){}
+             //return <Text key={patient.id}>{patient.text.PatientName}, {patient.text.Disease}</Text>
+            // {}}
             <View key={patient.id} style={styles.oneBox}>
-                <Card style={styles.cardStyle}>
-                <CardItem style={styles.innerPading}>
-                        <Left style={styles.leftMatter}>
-                            <Text style={[styles.lato, styles.forLeft, styles.patientNames]}>{`${patient.text.PatientName}`}</Text>
-                            <Text style={[styles.lato, styles.forLeft]}>{`Dis: ${patient.text.Disease}`}</Text>
-                            <Text style={[styles.lato, styles.forLeft]}>{`Med: ${patient.text.Medications}`}</Text>
-                        </Left>
-                        <Right style={styles.rightMatter}>
-                            <Text style={[styles.lato, styles.forRight]}>{`${patient.text.DateOfArrival}\n`}</Text>
-                            <Text style={[styles.lato, styles.forRight]}>{`Cost: $${patient.text.Cost}`}</Text>
-                        </Right>
-                </CardItem>
-                </Card>
+                <Text>{patient.text.PatientName}</Text>
+                <Text>{patient.text.Disease}</Text>
+                <Text>{patient.text.Medications}</Text>
+                <Text>{patient.text.DateOfArrival}</Text>
+                <Text>{patient.text.Cost}</Text>
             </View>
         );
         // let stringify = JSON.stringify(this.state.searchedPatient);
         let searchedPatientData = this.state.searchedPatient.map((patientTrack) =>
-                {console.log(`Results from Searched Patient Query: ${patientTrack}`)}
-                // <View key={`${patientTrack.id}1`} style={styles.oneBox}>
-                // <Card style={styles.cardStyle}>
-                // <CardItem style={styles.innerPading}>
-                //         <Left style={styles.leftMatter}>
-                //             <Text style={[styles.lato, styles.forLeft, styles.patientNames]}>{`${patientTrack.text.PatientName}`}</Text>
-                //             <Text style={[styles.lato, styles.forLeft]}>{`Dis: ${patientTrack.text.Disease}`}</Text>
-                //             <Text style={[styles.lato, styles.forLeft]}>{`Med: ${patientTrack.text.Medications}`}</Text>
-                //         </Left>
-                //         <Right style={styles.rightMatter}>
-                //             <Text style={[styles.lato, styles.forRight]}>{`${patientTrack.text.DateOfArrival}\n`}</Text>
-                //             <Text style={[styles.lato, styles.forRight]}>{`Cost: $${patientTrack.text.Cost}`}</Text>
-                //         </Right>
-                // </CardItem>
-                // </Card>
-                // </View>
+                <View key={`${patientTrack.id}1`}>
+                    <Text>{patientTrack.text.PatientName}</Text>
+                </View>
         )
         return(
             <ScrollView>
                 <Image source={require('../../img/db_bg.jpg')} style={styles.bgImage}>
                     <Image source={require('../../img/logo.png')}/>
-                    <Left style={styles.logoutBtn}>
-                        <Button transparent onPress={
-                        () => {Alert.alert(
-                            'Do you really want to Logout?',
-                            `${this.state.user.email}`,
-                            [
-                              {text: 'Logout', onPress: this.logout.bind(this)},
-                              {text: 'Cancel', onPress: () => console.log('Cancel Pressed')}
-                            ]
-                        )}}>
-                        <Icon name='ios-log-out' style={styles.logoutIcon} />
-                        </Button>
-                    </Left>
                 </Image>
                 <Modal
                 animationType="slide"
                 transparent={false}
                 visible={this.state.modalVisible}
-                presentationStyle="fullScreen"
                 onRequestClose={() => {Alert.alert(
                     'Want to Go Back?',
                     'Your added fields wont save',
@@ -232,8 +196,8 @@ export default class AddPatient extends React.Component {
                 )}}
                 >
                 <View>
-                    <KeyboardAvoidingView>
-                    <Header style={styles.modalHeader}>
+                    <View>
+                    <Header>
                     <Left>
                         <Button transparent onPress={() => {Alert.alert(
                         'Want to Go Back?',
@@ -247,46 +211,38 @@ export default class AddPatient extends React.Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title style={styles.title}>Add Patient</Title>
+                        <Title>Add Patient</Title>
                     </Body>
                     <Right>
                         <Button transparent>
                         </Button>
                     </Right>
                     </Header>
-                    <KeyboardAvoidingView style={styles.patientForm}>
                     <Item floatingLabel style={styles.formInput}>
                         <Label>Patient Name</Label>
-                        <Input style={styles.font}
+                        <Input
                         onChangeText={(text) => this.setState({patientName: text})} />
                     </Item>
                     <Item floatingLabel style={styles.formInput}>
                         <Label>Disease</Label>
-                        <Input style={styles.font}
-                        onChangeText={(text) => this.setState({patientDisease: text})}/>
+                        <Input
+                        onChangeText={(text) => this.setState({patientDisease: text})} />
                     </Item>
                     <Item floatingLabel style={styles.formInput}>
                         <Label>Medications</Label>
-                        <Input style={styles.font}
-                        onChangeText={(text) => this.setState({patientMedications: text})}/>
+                        <Input
+                        onChangeText={(text) => this.setState({patientMedications: text})} />
                     </Item>
-                    <Item floatingLabel style={styles.formInput}>
-                        <Label>Cost</Label>
-                        <Input style={styles.font}
-                        onChangeText={(text) => this.setState({cost: text})}/>
-                    </Item>
-                    <Text style={styles.dateLabel}>Date Of Arrival</Text>
                     <DatePicker
-                    style={{width: 200, marginTop: 10}}
+                    style={{width: 200}}
                     date={this.state.date}
                     mode="datetime"
-                    format="MM-DD-YYYY"
-                    minDate="01-01-2017"
-                    maxDate="04-04-2022"
+                    format="YYYY-MM-DD"
+                    minDate="2017-01-01"
+                    maxDate="2022-04-04"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-                    placeholderText="Date Of Arrival"
                     customStyles={{
                     dateIcon: {
                         position: 'absolute',
@@ -295,64 +251,54 @@ export default class AddPatient extends React.Component {
                         marginLeft: 0
                     },
                     dateInput: {
-                        marginLeft: 36,
+                        marginLeft: 36
                     }
+                    // ... You can check the source to find the other keys.
                     }}
                     onDateChange={(date) => this.setState({dateOfArrival: date})}
                     />
-                    <Button iconLeft onPress={this.addPatient.bind(this)} style={styles.addBtnpt}>
-                        <Icon name='ios-add-outline' style={styles.addBtnptIcon} />
-                    <Text style={styles.addBtnptText}>Add Patient</Text>
-                    </Button>
-                    </KeyboardAvoidingView>
-                    </KeyboardAvoidingView>
+                    <Item floatingLabel style={styles.formInput}>
+                        <Label>Cost</Label>
+                        <Input
+                        onChangeText={(text) => this.setState({cost: text})} />
+                    </Item>
+                    <TouchableOpacity onPress={this.addPatient.bind(this)}><Text>Add</Text></TouchableOpacity>
+        
+                    {/* <TouchableOpacity onPress={() => {
+                        this.setModalVisible(!this.state.modalVisible)
+                    }}>
+                        <Text>Hide Modal</Text>
+                    </TouchableOpacity> */}
+        
+                    </View>
                 </View>
                 </Modal>
-                <View style={styles.alignMent}>
-                <Button iconLeft onPress={() => {
+                <TouchableOpacity onPress={() => {
                 this.setModalVisible(true)
-                }} style={styles.btnBtn}>
-                <Icon name='ios-person-add-outline' style={styles.btnBtnIcon} />
-                <Text style={styles.btnBtnText}>Add Patient</Text>
-                </Button>
-                <Button iconLeft onPress={() => console.log('search pressed!!')} style={styles.btnBtnSearch}>
-                <Icon name='ios-search-outline' style={styles.btnBtnIconSearch} />
-                <Text style={styles.btnBtnTextSearch}>Search Patient</Text>
-                </Button>
-                </View>
-                {/* <Item>
+                }}>
+                <Text>Add Patient</Text>
+                </TouchableOpacity>
+                <Text>{this.state.user.email}</Text>
+                <Item>
                 <Icon name="ios-search" />
                 <Input placeholder="Search" ref="search" onChangeText={(text) => this.search(text)} value={this.state.text}/>
                 <Icon name="ios-people" />
                 </Item>
                 <TouchableOpacity>
                 <Text>Search</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
 
-                {
-                    // searchedPatientData
-                }
-                
-                {patientData.reverse()}
+                <TouchableOpacity onPress={this.searchPatient.bind(this)}>
+                <Text>Search Patient</Text>
+                </TouchableOpacity>
+                {searchedPatientData}
+                {patientData}
             </ScrollView>
         )
     }
     searchPatient() {
         this.props.navigator.push({
           component: SearchPatient
-        });
-    }
-    
-    logout() {
-        // logout, once that is complete, return the user to the login screen.
-        this.props.firebaseApp.auth().signOut().then(() => {
-            Alert.alert(
-                'Logged Out',
-                'You are Sucessfully Logged out',
-            )
-            this.props.navigator.push({
-            component: Login
-            });
         });
     }
     
